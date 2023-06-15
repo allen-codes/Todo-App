@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/create_todo.dart';
+import 'package:todo_app/screens/edit_todo.dart';
 import 'package:todo_app/screens/homepage.dart';
 import 'package:todo_app/screens/signin.dart';
+import 'package:todo_app/screens/upcomingtasks.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,8 +30,10 @@ class MyApp extends StatelessWidget {
         "/" : (context) => const SignIn(),
         "/homepage" : (context) => const HomePage(),
         "/create-todo" : (context) => const CreateToDo(),
-        "/edit-todo" : (context) => EditTodo(),
+        "/edit-todo" : (context) => const EditTodo(),
+        "/upcoming-tasks" : (context) => const UpcomingTasks(),
       }
     );
   }
 }
+
