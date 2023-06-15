@@ -22,7 +22,7 @@ class _UpcomingTasksState extends State<UpcomingTasks> {
                   // physics: AlwaysScrollableScrollPhysics(),
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return Todocard();                  }),
+                    return Todocard(index: index);                  }),
             )
           ],
         ),

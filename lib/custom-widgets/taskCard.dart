@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/todo_model.dart';
+import '../providers/todo_provider.dart';
 
 class Todocard extends StatefulWidget {
-  const Todocard({super.key});
+  final int index;
+  const Todocard({super.key, required this.index});
+  
 
   @override
-  State<Todocard> createState() => _TodocardState();
+  State<Todocard> createState() => _TodocardState(index: index);
 }
 
 class _TodocardState extends State<Todocard> {
   Color hoveredOnDone = Colors.deepPurple;
   Color hoveredOnDelete = Colors.deepPurple;
+  final int index;
+
+  _TodocardState({required this.index});
 
   @override
   Widget build(BuildContext context) {
+    TodoModel todo = context.watch<TodoProvider>().getTodos[index];
     return Column(
       children: [
         Container(
@@ -28,19 +38,19 @@ class _TodocardState extends State<Todocard> {
               title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        Text("FOLDER",
-                            style: TextStyle(
+                        Text(todo.folderName,
+                            style: const TextStyle(
                                 color: Colors.purple,
                                 fontWeight: FontWeight.bold)),
-                        Text(" > ",
+                        const Text(" > ",
                             style: TextStyle(
                                 color: Colors.purpleAccent,
                                 fontWeight: FontWeight.bold)),
                         Text(
-                          "TITLE",
-                          style: TextStyle(
+                          todo.title,
+                          style: const TextStyle(
                             color: Colors.deepPurple,
                             fontWeight: FontWeight.bold,
                           ),
@@ -59,8 +69,8 @@ class _TodocardState extends State<Todocard> {
                           )),
                     ),
                   ]),
-              subtitle: const Column(mainAxisSize: MainAxisSize.min, children: [
-                Text("subtitle"),
+              subtitle: Column(mainAxisSize: MainAxisSize.min, children: [
+                Text(todo.description),
               ])),
         ),
         Container(

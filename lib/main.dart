@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/providers/todo_provider.dart';
 import 'package:todo_app/screens/create_todo.dart';
 import 'package:todo_app/screens/edit_todo.dart';
 import 'package:todo_app/screens/homepage.dart';
 import 'package:todo_app/screens/signin.dart';
 import 'package:todo_app/screens/upcomingtasks.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(
+        create: (context) => TodoProvider(),
+      )
+    ], child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,24 +24,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColorLight: Color.fromARGB(255, 158, 240, 26),
-        primaryColor: const Color.fromARGB(255, 0, 128, 0),
-        primaryColorDark: const Color.fromARGB(255, 0, 75, 35),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      initialRoute: "/homepage",
-      routes: {
-        "/" : (context) => const SignIn(),
-        "/homepage" : (context) => const HomePage(),
-        "/create-todo" : (context) => const CreateToDo(),
-        "/edit-todo" : (context) => const EditTodo(),
-        "/upcoming-tasks" : (context) => const UpcomingTasks(),
-      }
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primaryColorLight: Color.fromARGB(255, 158, 240, 26),
+          primaryColor: const Color.fromARGB(255, 0, 128, 0),
+          primaryColorDark: const Color.fromARGB(255, 0, 75, 35),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        initialRoute: "/homepage",
+        routes: {
+          "/": (context) => const SignIn(),
+          "/homepage": (context) => const HomePage(),
+          "/create-todo": (context) => const CreateToDo(),
+          "/edit-todo": (context) => const EditTodo(),
+          "/upcoming-tasks": (context) => const UpcomingTasks(),
+        });
   }
 }
-
