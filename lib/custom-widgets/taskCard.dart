@@ -143,6 +143,5 @@ class _TodocardState extends State<Todocard> {
         )
       ],
     );
-    ;
   }
 }
