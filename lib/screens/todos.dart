@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/custom-widgets/taskCard.dart';
 
-class UpcomingTasks extends StatefulWidget {
-  const UpcomingTasks({super.key});
+class Todos extends StatefulWidget {
+  const Todos({super.key});
 
   @override
-  State<UpcomingTasks> createState() => _UpcomingTasksState();
+  State<Todos> createState() => _TodosState();
 }
 
-class _UpcomingTasksState extends State<UpcomingTasks> {
+class _TodosState extends State<Todos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,8 @@ class _UpcomingTasksState extends State<UpcomingTasks> {
                   // physics: AlwaysScrollableScrollPhysics(),
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return Todocard(index: index);                  }),
+                    return Todocard(index: index);
+                  }),
             )
           ],
         ),

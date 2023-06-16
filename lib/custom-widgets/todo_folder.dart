@@ -8,6 +8,8 @@ class TodoFolder extends StatefulWidget {
 }
 
 class _TodoFolderState extends State<TodoFolder> {
+  Color favoritesColor = Colors.deepPurple.shade100;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +22,21 @@ class _TodoFolderState extends State<TodoFolder> {
             Radius.circular(10),
           ),
         ),
-        child: Stack(children: [
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(alignment: Alignment.topLeft, child: IconButton(onPressed: () {
+            if (favoritesColor == Colors.deepPurple.shade100) {
+              setState(() {
+                favoritesColor = Colors.deepPurple;
+              });
+            } else {
+              setState(() {
+                favoritesColor = Colors.deepPurple.shade100;
+              });
+            }
+          }, icon: Icon(Icons.star, color: favoritesColor,)),),
           Align(
             alignment: Alignment.topRight,
             child: PopupMenuButton(
@@ -35,8 +51,6 @@ class _TodoFolderState extends State<TodoFolder> {
                       child: Text("Edit"),
                     ),
                     const PopupMenuItem(
-                        value: "favorites", child: Text("Add to Favorites")),
-                    const PopupMenuItem(
                       value: "archive",
                       child: Text("Archive"),
                     ),
@@ -47,12 +61,20 @@ class _TodoFolderState extends State<TodoFolder> {
                   ];
                 }),
           ),
-          const Align(
-            alignment: Alignment.center,
-            child: Text(
-              "TITLE HERE",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: const Align(
+              alignment: Alignment.center,
+              child: Text(
+                "TITLE HERE",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

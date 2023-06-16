@@ -5,7 +5,7 @@ import 'package:todo_app/screens/create_todo.dart';
 import 'package:todo_app/screens/edit_todo.dart';
 import 'package:todo_app/screens/homepage.dart';
 import 'package:todo_app/screens/signin.dart';
-import 'package:todo_app/screens/upcomingtasks.dart';
+import 'package:todo_app/screens/todos.dart';
 
 void main() async {
   runApp(
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           "/homepage": (context) => const HomePage(),
           "/create-todo": (context) => const CreateToDo(),
           "/edit-todo": (context) => const EditTodo(),
-          "/upcoming-tasks": (context) => const UpcomingTasks(),
+          "/todos": (context) => const Todos(),
         });
   }
 }
