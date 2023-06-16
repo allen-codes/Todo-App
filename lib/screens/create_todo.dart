@@ -22,15 +22,11 @@ class _CreateToDoState extends State<CreateToDo> {
             key: key,
             child: Column(
               children: [
-                Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton.filled(onPressed: () {}, icon: Icon(Icons.close),
-                        color: Colors.deepPurple,
-                        style: ButtonStyle(iconSize:  const MaterialStatePropertyAll(30), backgroundColor: MaterialStatePropertyAll(Colors.deepPurple.shade100)),)
-                    ),
-                const Row(
-                  
+                
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -42,7 +38,12 @@ class _CreateToDoState extends State<CreateToDo> {
                         ),
                       ),
                     ),
-                    
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton.filled(onPressed: () {}, icon: Icon(Icons.close),
+                        color: Colors.deepPurple,
+                        style: ButtonStyle(iconSize:  const MaterialStatePropertyAll(30), backgroundColor: MaterialStatePropertyAll(Colors.deepPurple.shade100)),)
+                    ),
                   ],
                 ),
                 Container(
@@ -54,6 +55,7 @@ class _CreateToDoState extends State<CreateToDo> {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10))),
                     child: TextFormField(
+                      maxLength: 50,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                       ),
