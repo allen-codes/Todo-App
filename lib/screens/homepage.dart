@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Expanded(
               child: GridView.builder(
-              itemCount: context.watch<TodoProvider>().getTodos.length,
+              itemCount: 10,
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
             itemBuilder: (context, index) {

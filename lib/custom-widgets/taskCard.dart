@@ -6,23 +6,24 @@ import '../providers/todo_provider.dart';
 
 class Todocard extends StatefulWidget {
   final int index;
-  const Todocard({super.key, required this.index});
+  final TodoModel todo;
+  const Todocard({super.key, required this.index, required this.todo});
   
 
   @override
-  State<Todocard> createState() => _TodocardState(index: index);
+  State<Todocard> createState() => _TodocardState(index: index, todo: todo);
 }
 
 class _TodocardState extends State<Todocard> {
   Color hoveredOnDone = Colors.deepPurple;
   Color hoveredOnDelete = Colors.deepPurple;
   final int index;
+  final TodoModel todo;
 
-  _TodocardState({required this.index});
+  _TodocardState({required this.index, required this.todo});
 
   @override
   Widget build(BuildContext context) {
-    TodoModel todo = context.watch<TodoProvider>().getTodos[index];
     return Column(
       children: [
         Container(

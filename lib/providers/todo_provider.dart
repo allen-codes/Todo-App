@@ -1,20 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../apis/todos_api.dart';
 import '../models/todo_model.dart';
 
 class TodoProvider with ChangeNotifier{
-  List<TodoModel> todoList = [
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-    TodoModel(title: "COOKING PASTA", folderName: "Household Chores", duedate: DateTime(2022, 9, 7), description: "Some sweet pasta for today's celebration"),
-  ];
+  late TodoAPI firebaseTodoService;
+  Stream<QuerySnapshot> _todosStream = const Stream.empty();
 
-  List<TodoModel> get getTodos => todoList;
+  Stream<QuerySnapshot> get todosStream => _todosStream;
+
+  TodoProvider(){
+    firebaseTodoService = TodoAPI();
+    fetchTodos();
+  }
+
+  void fetchTodos() {
+    _todosStream = firebaseTodoService.getTodos();
+    print(_todosStream.first);
+    notifyListeners();
+  }
 }
