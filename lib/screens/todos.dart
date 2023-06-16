@@ -40,12 +40,15 @@ class _TodosState extends State<Todos> {
                 Expanded(
                   child: ListView.builder(
                       // physics: AlwaysScrollableScrollPhysics(),
-                      itemCount: 10,
+                      itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
-                        TodoModel todo = TodoModel(
-                            title: "aaa",
-                            folderName: "hhh",
-                            description: "ggg");
+                        print(snapshot.data!.docs.length);
+                        List<TodoModel> todosList = [];
+                        for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                          Map<String, dynamic> todo = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                          todosList.add(TodoModel.fromJSON(todo));
+                        }
+                        TodoModel todo = todosList[index];
                         return Todocard(index: index, todo: todo);
                       }),
                 )
