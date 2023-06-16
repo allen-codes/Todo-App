@@ -22,27 +22,56 @@ class _CreateToDoState extends State<CreateToDo> {
             key: key,
             child: Column(
               children: [
-                
-                 Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "CREATE TODO",
-                        style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30
+                    Column(
+                      children: [
+                        const Text(
+                          "CREATE TODO",
+                          style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30),
                         ),
-                      ),
+                        Row(
+                          children: [
+                            Text("Folder Name: ", style: TextStyle(color: Colors.deepPurple,),),
+                            TextButton(
+                              child: const Text("folder name"),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Select Folder'),
+                                      content: Text('Folders'),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Close'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton.filled(onPressed: () {}, icon: Icon(Icons.close),
-                        color: Colors.deepPurple,
-                        style: ButtonStyle(iconSize:  const MaterialStatePropertyAll(30), backgroundColor: MaterialStatePropertyAll(Colors.deepPurple.shade100)),)
+                    IconButton.filled(
+                      onPressed: () {},
+                      icon: const Icon(Icons.close),
+                      color: Colors.deepPurple,
+                      style: ButtonStyle(
+                          iconSize: const MaterialStatePropertyAll(30),
+                          backgroundColor: MaterialStatePropertyAll(
+                              Colors.deepPurple.shade100)),
                     ),
                   ],
                 ),
@@ -55,6 +84,7 @@ class _CreateToDoState extends State<CreateToDo> {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10))),
                     child: TextFormField(
+                      textAlignVertical: TextAlignVertical.center,
                       maxLength: 50,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
@@ -70,7 +100,8 @@ class _CreateToDoState extends State<CreateToDo> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10))),
                   child: TextFormField(
-                    maxLines: 20,
+                    maxLength: 200,
+                    maxLines: 5,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                     ),
@@ -79,71 +110,75 @@ class _CreateToDoState extends State<CreateToDo> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
-
                   children: [
-                    Row(children: [
-                      const Icon(Icons.date_range,
-                        size: 30,
-                        color: Colors.deepPurple,
-                        shadows: [Shadow(color: Colors.black)]),
-                    TextButton(
-                      child: Text(
-                        "${selectedDate.year} - ${selectedDate.month} - ${selectedDate.day}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () async {
-                        final DateTime? dateTime = await showDatePicker(
-                            context: context,
-                            initialDate: selectedDate,
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(3000));
-                        if (dateTime != null) {
-                          [
-                            setState(() {
-                              selectedDate = dateTime;
-                            })
-                          ];
-                        }
-                      },
+                    Row(
+                      children: [
+                        const Icon(Icons.date_range,
+                            size: 30,
+                            color: Colors.deepPurple,
+                            shadows: [Shadow(color: Colors.black)]),
+                        TextButton(
+                          child: Text(
+                            "${selectedDate.year} - ${selectedDate.month} - ${selectedDate.day}",
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () async {
+                            final DateTime? dateTime = await showDatePicker(
+                                context: context,
+                                initialDate: selectedDate,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(3000));
+                            if (dateTime != null) {
+                              [
+                                setState(() {
+                                  selectedDate = dateTime;
+                                })
+                              ];
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    ],),
-                    
-                    Row(children: [
-                      const Icon(Icons.alarm,
-                        size: 30,
-                        color: Colors.deepPurple,
-                        shadows: [Shadow(color: Colors.black)]),
-
-                    TextButton(
-                      child: Text(
-                        "${selectedTime.hour} : ${selectedDate.minute}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () async {
-                        final TimeOfDay? time = await showTimePicker(context: context, initialTime: selectedTime);
-                        if (time != null) {
-                          [
-                            setState(() {
-                              selectedTime = time;
-                            })
-                          ];
-                        }
-                      },
-                    ),
-                    ],)
+                    Row(
+                      children: [
+                        const Icon(Icons.alarm,
+                            size: 30,
+                            color: Colors.deepPurple,
+                            shadows: [Shadow(color: Colors.black)]),
+                        TextButton(
+                          child: Text(
+                            "${selectedTime.hour} : ${selectedDate.minute}",
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () async {
+                            final TimeOfDay? time = await showTimePicker(
+                                context: context, initialTime: selectedTime);
+                            if (time != null) {
+                              [
+                                setState(() {
+                                  selectedTime = time;
+                                })
+                              ];
+                            }
+                          },
+                        ),
+                      ],
+                    )
                   ],
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton(
                   onPressed: () {},
-                  
                   child: const Text("ADD TODO"),
                   style: const ButtonStyle(
                       // shadowColor: MaterialStatePropertyAll(Colors.black),
-                      
-                      foregroundColor: MaterialStatePropertyAll(Colors.deepPurple),
+
+                      foregroundColor:
+                          MaterialStatePropertyAll(Colors.deepPurple),
                       elevation: MaterialStatePropertyAll(2),
                       textStyle: MaterialStatePropertyAll(
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),

@@ -64,8 +64,8 @@ class _TodocardState extends State<Todocard> {
                       child: Container(
                           padding: const EdgeInsets.all(5),
                           color: Colors.deepPurple,
-                          child: const Text(
-                            "YYYY-MM-DD",
+                          child: Text(
+                            "${todo.duedate!.year}-${todo.duedate!.month}-${todo.duedate!.day}",
                             style: TextStyle(fontSize: 10, color: Colors.white),
                           )),
                     ),
