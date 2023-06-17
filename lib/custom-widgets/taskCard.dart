@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../models/todo_model.dart';
-import '../providers/todo_provider.dart';
+
 
 class Todocard extends StatefulWidget {
   final int index;
