@@ -16,6 +16,7 @@ class _CreateToDoState extends State<CreateToDo> {
   final key = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
+  String selectedFolder = "folder name";
 
   Widget titleField() {
     return Container(
@@ -153,6 +154,7 @@ class _CreateToDoState extends State<CreateToDo> {
                               fontSize: 30),
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
                               "Folder Name: ",
@@ -161,13 +163,13 @@ class _CreateToDoState extends State<CreateToDo> {
                               ),
                             ),
                             TextButton(
-                              child: const Text("folder name"),
+                              child: Text(selectedFolder),
                               onPressed: () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text('Select Folder'),
+                                      title: const Text('Select Folder'),
                                       content: SingleChildScrollView(
                                         child: SizedBox(
                                           height: MediaQuery.of(context).size.height/2,
@@ -179,7 +181,10 @@ class _CreateToDoState extends State<CreateToDo> {
                                                   child: Text(folders[index]
                                                       .folderName),
                                                   onPressed: () {
-                                                    print(folders[index].todos);
+                                                    setState(() {
+                                                      selectedFolder = folders[index].folderName;
+                                                    });
+                                                    Navigator.pop(context);
                                                   },
                                                 );
                                               }),

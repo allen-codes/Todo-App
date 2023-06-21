@@ -3,9 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/custom-widgets/taskCard.dart';
 import 'package:todo_app/models/todo_model.dart';
 
-import '../models/folder_model.dart';
 import '../providers/folder_provider.dart';
-import '../providers/todo_provider.dart';
 
 class Todos extends StatefulWidget {
   Todos({super.key});
