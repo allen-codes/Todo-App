@@ -17,10 +17,8 @@ class _TodosInFolderState extends State<TodosInFolder> {
   @override
   Widget build(BuildContext context) {
     
-    return Consumer2(builder: (context, value, value2, child) {
-      return Column(children: [
-        Text("${value}")
-      ],);
-    },);
+    return Column(children: [
+      Text("")
+    ],);
   }
 }

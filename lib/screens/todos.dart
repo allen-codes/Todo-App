@@ -28,15 +28,15 @@ class _TodosState extends State<Todos> {
     }
     return Scaffold(
       body: (todos.isEmpty)
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Container(
               margin: const EdgeInsets.all(10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
                         "TODOS",
                         style: TextStyle(
                             fontSize: 20,

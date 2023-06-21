@@ -23,6 +23,7 @@ class _TodocardState extends State<Todocard> {
 
   @override
   Widget build(BuildContext context) {
+    print(todo.title);
     return Column(
       children: [
         Container(
@@ -44,7 +45,7 @@ class _TodocardState extends State<Todocard> {
                             style: const TextStyle(
                                 color: Colors.purple,
                                 fontWeight: FontWeight.bold)),
-                        const Text(" > ",
+                        const Text(" : ",
                             style: TextStyle(
                                 color: Colors.purpleAccent,
                                 fontWeight: FontWeight.bold)),

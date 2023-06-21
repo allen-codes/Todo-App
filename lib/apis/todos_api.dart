@@ -13,25 +13,18 @@ class TodoAPI {
         .map((doc) => TodoModel.fromJSON(doc.data() as Map<String, dynamic>))
         .toList());
 
-  return todosSnapshot;
+    return todosSnapshot;
   }
 
-  Stream<List<TodoModel>> getTodosInFolder(List<String> todoIDs) {
-  return db
-      .collection("todos")
-      .where(FieldPath.documentId, whereIn: todoIDs)
-      .snapshots()
-      .map((querySnapshot) {
-    final todoModelsinFolder = <TodoModel>[];
-
-    for (final docSnapshot in querySnapshot.docs) {
-      final todoJSON = docSnapshot.data() as Map<String, dynamic>;
-      final todoModel = TodoModel.fromJSON(todoJSON);
-      todoModelsinFolder.add(todoModel);
+  Future<String> addTodo(Map<String, dynamic> todo) async {
+    try {
+      await db.collection("todos").add(todo);
+      return "Successfully added a todo";
+    } on FirebaseException catch (e) {
+      return "Failed with error code: ${e.code}";
     }
+  }
 
-    return todoModelsinFolder;
-  });
-}
+  
 
 }

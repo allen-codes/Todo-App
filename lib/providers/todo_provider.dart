@@ -22,10 +22,16 @@ class TodoProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  void fetchTodosInFolder(List<String> todoIDs) {
-    _todosInFolderStream = firebaseTodoService.getTodosInFolder(todoIDs);
-    notifyListeners();
-  }
+  void addTodo(String title, String description, DateTime? duedate, String folderName, bool? isActive) async {
+    Map<String, dynamic> newTodo = {
+      "title" : title,
+      "description" : description,
+      "duedate" : duedate,
+      "folderName" : folderName,
+      "isActive" : isActive
+    };
 
+    await firebaseTodoService.addTodo(newTodo);
+  }
 
 }

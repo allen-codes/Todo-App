@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/models/folder_model.dart';
 
+import '../providers/todo_provider.dart';
+
 
 
 class CreateToDo extends StatefulWidget {
@@ -16,7 +18,10 @@ class _CreateToDoState extends State<CreateToDo> {
   final key = GlobalKey<FormState>();
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
-  String selectedFolder = "folder name";
+  String selectedFolder = "Default";
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   Widget titleField() {
     return Container(
@@ -26,12 +31,21 @@ class _CreateToDoState extends State<CreateToDo> {
             border: Border.all(color: Colors.deepPurple, width: 1.75),
             borderRadius: const BorderRadius.all(Radius.circular(10))),
         child: TextFormField(
+          controller: titleController,
           textAlignVertical: TextAlignVertical.center,
           maxLength: 50,
           decoration: const InputDecoration(
             border: InputBorder.none,
           ),
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          validator: (value) {
+            print("TITTLE: ${titleController.text}");
+            print("DESCRIPTION: ${descriptionController.text}");
+            if (value == null || value.isEmpty) {
+              return "Please Enter a Title";
+            }
+            return null;
+          },
         ));
   }
 
@@ -43,6 +57,7 @@ class _CreateToDoState extends State<CreateToDo> {
           border: Border.all(color: Colors.deepPurple, width: 1.75),
           borderRadius: const BorderRadius.all(Radius.circular(10))),
       child: TextFormField(
+        controller: descriptionController,
         maxLength: 200,
         maxLines: 5,
         decoration: const InputDecoration(
@@ -118,9 +133,13 @@ class _CreateToDoState extends State<CreateToDo> {
 
   Widget addTodoButton() {
     return ElevatedButton(
-      
-      onPressed: () {},
-      child: const Text("ADD TODO", style: TextStyle(fontSize: 15)),
+      onPressed: () {
+        if (key.currentState!.validate()) {
+          context.read<TodoProvider>().addTodo(titleController.text, descriptionController.text, DateTime.now(), selectedFolder, true);
+        }
+        Navigator.pop(context);
+
+      },
       style: const ButtonStyle(
           // shadowColor: MaterialStatePropertyAll(Colors.black),
           
@@ -129,6 +148,7 @@ class _CreateToDoState extends State<CreateToDo> {
           textStyle: MaterialStatePropertyAll(
               TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           padding: MaterialStatePropertyAll(EdgeInsets.all(20))),
+      child: const Text("ADD TODO", style: TextStyle(fontSize: 15)),
     );
   }
 
@@ -156,7 +176,7 @@ class _CreateToDoState extends State<CreateToDo> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Folder Name: ",
                               style: TextStyle(
                                 color: Colors.deepPurple,
@@ -196,7 +216,7 @@ class _CreateToDoState extends State<CreateToDo> {
                                             // Close the dialog
                                             Navigator.pop(context);
                                           },
-                                          child: Text('Close'),
+                                          child: const Text('Close'),
                                         ),
                                       ],
                                     );
@@ -224,7 +244,7 @@ class _CreateToDoState extends State<CreateToDo> {
                 titleField(),
                 descriptionField(),
                 dateField(),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 addTodoButton(),
