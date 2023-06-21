@@ -36,9 +36,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<List<TodoModel>>.value(value: context.watch<TodoProvider>().todosStream, initialData: const <TodoModel>[],),
-        StreamProvider<List<FolderModel>>.value(value: context.watch<FolderProvider>().foldersStream, initialData: const <FolderModel>[],)
-
+        StreamProvider<List<TodoModel>>.value(value: context.watch<TodoProvider>().todosStream, initialData: const [],),
+        StreamProvider<List<FolderModel>>.value(value: context.watch<FolderProvider>().foldersStream, initialData: const [],)
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -50,14 +49,15 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          initialRoute: "/todos",
+          initialRoute: "/homepage",
           routes: {
             "/": (context) => const SignIn(),
             "/homepage": (context) => const HomePage(),
             "/create-todo": (context) => const CreateToDo(),
             "/edit-todo": (context) => const EditTodo(),
-            "/todos": (context) => const Todos(),
-          }),
+            "/todos": (context) => Todos(),
+          },),
+          
     );
   }
 }

@@ -6,16 +6,26 @@ import '../models/todo_model.dart';
 class TodoProvider with ChangeNotifier{
   late TodoAPI firebaseTodoService;
   Stream<List<TodoModel>> _todosStream = const Stream.empty();
+  Stream<List<TodoModel>> _todosInFolderStream = const Stream.empty();
 
   Stream<List<TodoModel>> get todosStream => _todosStream;
+  Stream<List<TodoModel>> get todosInFolder => _todosInFolderStream;
 
   TodoProvider(){
     firebaseTodoService = TodoAPI();
     fetchTodos();
+    
   }
 
   void fetchTodos() {
     _todosStream = firebaseTodoService.getTodos();
     notifyListeners();
   }
+
+  void fetchTodosInFolder(List<String> todoIDs) {
+    _todosInFolderStream = firebaseTodoService.getTodosInFolder(todoIDs);
+    notifyListeners();
+  }
+
+
 }

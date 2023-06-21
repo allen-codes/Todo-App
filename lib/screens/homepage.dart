@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:todo_app/custom-widgets/todo_folder.dart';
+import 'package:todo_app/models/folder_model.dart';
 
 
 
@@ -12,18 +14,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Widget todoPage() {
+  
+  Widget todoPage(BuildContext context) {
+    List<FolderModel> folders = Provider.of<List<FolderModel>>(context);
     return Container(
       padding: EdgeInsets.all(20),
       child: Column(
         children: [
           Expanded(
               child: GridView.builder(
-              itemCount: 10,
+              itemCount: folders.length,
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
             itemBuilder: (context, index) {
-              return TodoFolder();
+              return TodoFolder(folderName: folders[index].folderName,);
             },
           )),
         ],
@@ -33,6 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -74,9 +79,11 @@ class _HomePageState extends State<HomePage> {
             )
           ]),
         ),
-        body: TabBarView(children: [todoPage(), const Placeholder()]),
+        body: TabBarView(children: [todoPage(context), const Placeholder()]),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, "/create-todo");
+          },
           child: const Icon(Icons.add),
         ),
       ),

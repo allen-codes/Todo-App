@@ -117,11 +117,12 @@ class _CreateToDoState extends State<CreateToDo> {
 
   Widget addTodoButton() {
     return ElevatedButton(
+      
       onPressed: () {},
       child: const Text("ADD TODO", style: TextStyle(fontSize: 15)),
       style: const ButtonStyle(
           // shadowColor: MaterialStatePropertyAll(Colors.black),
-
+          
           foregroundColor: MaterialStatePropertyAll(Colors.deepPurple),
           elevation: MaterialStatePropertyAll(2),
           textStyle: MaterialStatePropertyAll(
@@ -177,7 +178,9 @@ class _CreateToDoState extends State<CreateToDo> {
                                                 return TextButton(
                                                   child: Text(folders[index]
                                                       .folderName),
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    print(folders[index].todos);
+                                                  },
                                                 );
                                               }),
                                         ),
@@ -201,7 +204,9 @@ class _CreateToDoState extends State<CreateToDo> {
                       ],
                     ),
                     IconButton.filled(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       icon: const Icon(Icons.close),
                       color: Colors.deepPurple,
                       style: ButtonStyle(
