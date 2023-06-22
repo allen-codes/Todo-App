@@ -6,13 +6,11 @@ class TodoAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   Stream<List<TodoModel>> getTodos() {
-    final todosSnapshot = db
-    .collection("todos")
-    .snapshots()
-    .map((querySnapshot) => querySnapshot.docs
-        .map((doc) => TodoModel.fromJSON(doc.data() as Map<String, dynamic>))
-        .toList());
-
+    final todosSnapshot = db.collection("todos").snapshots().map(
+        (querySnapshot) => querySnapshot.docs
+            .map(
+                (doc) => TodoModel.fromJSON(doc.data() as Map<String, dynamic>))
+            .toList());
     return todosSnapshot;
   }
 
@@ -25,6 +23,14 @@ class TodoAPI {
     }
   }
 
-  
-
+  Stream<List<TodoModel>> getFolderTodos(List<String> todoIDs) {
+    final todoModels = db
+        .collection("todos")
+        .where(FieldPath.documentId, whereIn: todoIDs)
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => TodoModel.fromJSON(e.data() as Map<String, dynamic>))
+            .toList());
+    return todoModels;
+  }
 }

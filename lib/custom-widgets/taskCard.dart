@@ -94,7 +94,10 @@ class _TodocardState extends State<Todocard> {
                         style: TextStyle(
                           color: Colors.white,
                         )),
-                    onPressed: () {},
+                    onPressed: () {
+                     
+     
+                    },
                      onHover: (value) {
                         if (value) {
                           setState(() {
@@ -125,7 +128,29 @@ class _TodocardState extends State<Todocard> {
                           style: TextStyle(
                             color: Colors.white,
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                         showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Delete Todo'),
+                                      content: const Text("Are you sure you want to delete this todo?"),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("YES"),
+                                        ),
+                                        ElevatedButton(onPressed: () {
+                                          Navigator.pop(context);
+                                        }, child: const Text("No"))
+                                      ],
+                                    );
+                                  },
+                                );
+                      },
                       onHover: (value) {
                         if (value) {
                           setState(() {

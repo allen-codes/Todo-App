@@ -4,6 +4,7 @@ import 'package:todo_app/custom-widgets/taskCard.dart';
 import 'package:todo_app/models/todo_model.dart';
 
 import '../providers/folder_provider.dart';
+import '../providers/todo_provider.dart';
 
 class Todos extends StatefulWidget {
   Todos({super.key});
@@ -13,48 +14,59 @@ class Todos extends StatefulWidget {
 }
 
 class _TodosState extends State<Todos> {
-  
+
 
   @override
   Widget build(BuildContext context) {
-    String folderName = context.watch<FolderProvider>().folderOnView;
-    List<TodoModel> allTodos = Provider.of<List<TodoModel>>(context);
-    List<TodoModel> todos  = [];
-    for (TodoModel todo in allTodos) {
-      print("${todo.folderName} : ${folderName}");
-      if (todo.folderName == folderName){
-        todos.add(todo);
+    context.watch<TodoProvider>().fetchFolderTodos(context.read<FolderProvider>().folderTodos());
+    Stream<List<TodoModel>> todos = context.watch<TodoProvider>().todosInFolder;
+    String folderName = context.watch<FolderProvider>().folderOnView.folderName;
+
+    return StreamBuilder<Object>(
+      stream: todos,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("An error has occured!"),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting){
+          return const CircularProgressIndicator();
+        } else if (!snapshot.hasData) {
+          return Center(
+            child: Text("Has no date")
+          );
+        } 
+        List<TodoModel> todos = snapshot.data as List<TodoModel>;
+        // return Placeholder();
+        return Scaffold(
+          body: Container(
+                  margin: const EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                          padding: const EdgeInsets.all(10),
+                          child: const Text(
+                            "TODOS",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold),
+                          )),
+                      Expanded(
+                        child: ListView.builder(
+                            // physics: AlwaysScrollableScrollPhysics(),
+                            itemCount: todos.length,
+                            itemBuilder: (context, index) {
+                              TodoModel todo = todos[index];
+                              return Todocard(index: index, todo: todo);
+                            }),
+                      )
+                    ],
+                  ),
+                ),
+        );
       }
-    }
-    return Scaffold(
-      body: (todos.isEmpty)
-          ? const Center(child: CircularProgressIndicator())
-          : Container(
-              margin: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                      padding: const EdgeInsets.all(10),
-                      child: const Text(
-                        "TODOS",
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.purple,
-                            fontWeight: FontWeight.bold),
-                      )),
-                  Expanded(
-                    child: ListView.builder(
-                        // physics: AlwaysScrollableScrollPhysics(),
-                        itemCount: todos.length,
-                        itemBuilder: (context, index) {
-                          TodoModel todo = todos[index];
-                          return Todocard(index: index, todo: todo);
-                        }),
-                  )
-                ],
-              ),
-            ),
     );
   }
 }

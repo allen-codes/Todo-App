@@ -6,10 +6,10 @@ import '../models/folder_model.dart';
 class FolderProvider with ChangeNotifier{
   late FolderAPI firebaseTodoService;
   Stream<List<FolderModel>> _foldersStream = const Stream.empty();
-  String folderOnViewed = "";
+  late FolderModel folderOnViewed;
 
   Stream<List<FolderModel>> get foldersStream => _foldersStream;
-  String get folderOnView => folderOnViewed;
+  FolderModel get folderOnView => folderOnViewed;
 
   FolderProvider(){
     firebaseTodoService = FolderAPI();
@@ -21,7 +21,15 @@ class FolderProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  void setFolderOnView(String folderName) {
-    folderOnViewed = folderName;
+  void setFolderOnView(FolderModel folder) {
+    folderOnViewed = folder;
+  }
+
+  List<String> folderTodos() {
+    List<String> folderTodoIDs= []; 
+    for (String ID in folderOnViewed.todos){
+      folderTodoIDs.add(ID);
+    }
+    return folderTodoIDs;
   }
 }

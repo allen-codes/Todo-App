@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/custom-widgets/todo_folder.dart';
 import 'package:todo_app/models/folder_model.dart';
 
-
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -14,20 +12,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
   Widget todoPage(BuildContext context) {
     List<FolderModel> folders = Provider.of<List<FolderModel>>(context);
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           Expanded(
               child: GridView.builder(
-              itemCount: folders.length,
+            itemCount: folders.length,
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
             itemBuilder: (context, index) {
-              return TodoFolder(folderName: folders[index].folderName,);
+              return TodoFolder(
+                folder: folders[index],
+              );
             },
           )),
         ],
@@ -37,7 +36,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
     return DefaultTabController(
       length: 2,
       child: Scaffold(

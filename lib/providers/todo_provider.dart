@@ -14,7 +14,10 @@ class TodoProvider with ChangeNotifier{
   TodoProvider(){
     firebaseTodoService = TodoAPI();
     fetchTodos();
-    
+  }
+
+  void fetchFolderTodos(List<String> todoIDs) {
+    _todosInFolderStream = firebaseTodoService.getFolderTodos(todoIDs);
   }
 
   void fetchTodos() {

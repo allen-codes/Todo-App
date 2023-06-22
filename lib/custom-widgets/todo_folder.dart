@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/folder_model.dart';
 import '../providers/folder_provider.dart';
 
 class TodoFolder extends StatefulWidget {
-  String folderName;
-  TodoFolder({super.key, required this.folderName});
+  FolderModel folder;
+  TodoFolder({super.key, required this.folder});
 
   @override
-  State<TodoFolder> createState() => _TodoFolderState(folderName: folderName);
+  State<TodoFolder> createState() => _TodoFolderState(folder: folder);
 }
 
 class _TodoFolderState extends State<TodoFolder> {
-  String folderName;
+  FolderModel folder;
   Color favoritesColor = Colors.deepPurple.shade100;
 
-  _TodoFolderState({required this.folderName});
+  _TodoFolderState({required this.folder});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.read<FolderProvider>().setFolderOnView(folderName);
+        context.read<FolderProvider>().setFolderOnView(folder);
         Navigator.pushNamed(context, "/todos");
       },
       child: Container(
@@ -88,7 +89,7 @@ class _TodoFolderState extends State<TodoFolder> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  folderName,
+                  folder.folderName,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   textAlign: TextAlign.center,
