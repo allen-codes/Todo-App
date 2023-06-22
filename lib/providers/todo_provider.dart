@@ -25,6 +25,11 @@ class TodoProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  void deleteTodo(String todoID) {
+    firebaseTodoService.deleteEntry(todoID);
+    notifyListeners();
+  }
+
   void addTodo(String title, String description, DateTime? duedate, String folderName, bool? isActive) async {
     Map<String, dynamic> newTodo = {
       "title" : title,

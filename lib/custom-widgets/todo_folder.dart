@@ -5,8 +5,8 @@ import '../models/folder_model.dart';
 import '../providers/folder_provider.dart';
 
 class TodoFolder extends StatefulWidget {
-  FolderModel folder;
-  TodoFolder({super.key, required this.folder});
+  final FolderModel folder;
+  const TodoFolder({super.key, required this.folder});
 
   @override
   State<TodoFolder> createState() => _TodoFolderState(folder: folder);

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/todo_model.dart';
+import '../providers/todo_provider.dart';
 
 
 class Todocard extends StatefulWidget {
   final int index;
   final TodoModel todo;
-  const Todocard({super.key, required this.index, required this.todo});
+  final String todoID;
+  const Todocard({super.key, required this.index, required this.todo, required this.todoID});
   
 
   @override
-  State<Todocard> createState() => _TodocardState(index: index, todo: todo);
+  State<Todocard> createState() => _TodocardState(index: index, todo: todo, todoID: todoID);
 }
 
 class _TodocardState extends State<Todocard> {
@@ -18,12 +21,12 @@ class _TodocardState extends State<Todocard> {
   Color hoveredOnDelete = Colors.deepPurple;
   final int index;
   final TodoModel todo;
+  final String todoID;
 
-  _TodocardState({required this.index, required this.todo});
+  _TodocardState({required this.index, required this.todo, required this.todoID});
 
   @override
   Widget build(BuildContext context) {
-    print(todo.title);
     return Column(
       children: [
         Container(
@@ -140,11 +143,13 @@ class _TodocardState extends State<Todocard> {
                                           onPressed: () {
                                             // Close the dialog
                                             Navigator.pop(context);
+                                            context.read<TodoProvider>().deleteTodo(todoID);
                                           },
                                           child: const Text("YES"),
                                         ),
                                         ElevatedButton(onPressed: () {
                                           Navigator.pop(context);
+                                          
                                         }, child: const Text("No"))
                                       ],
                                     );

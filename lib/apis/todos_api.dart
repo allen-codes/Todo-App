@@ -23,6 +23,16 @@ class TodoAPI {
     }
   }
 
+  Future<String> deleteEntry(String todoID) async {
+    try {
+      db.collection("todos").doc(todoID).delete();
+
+      return "Successfully deleted an entry";
+    } on FirebaseException catch (e) {
+      return "Failed with error code: ${e.code}";
+    }
+  }
+
   Stream<List<TodoModel>> getFolderTodos(List<String> todoIDs) {
     final todoModels = db
         .collection("todos")

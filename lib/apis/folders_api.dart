@@ -14,4 +14,8 @@ class FolderAPI {
 
     return entriesSnapshot;
   }
+
+  // void updateTodoIDS(List<String> todoIDs) {
+  //   db.collection("folders").doc().update({'todos': todoIDs });
+  // }
 }

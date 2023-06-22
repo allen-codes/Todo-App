@@ -20,19 +20,18 @@ class _TodosState extends State<Todos> {
   Widget build(BuildContext context) {
     context.watch<TodoProvider>().fetchFolderTodos(context.read<FolderProvider>().folderTodos());
     Stream<List<TodoModel>> todos = context.watch<TodoProvider>().todosInFolder;
-    String folderName = context.watch<FolderProvider>().folderOnView.folderName;
 
     return StreamBuilder<Object>(
       stream: todos,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(
+          return const Center(
             child: Text("An error has occured!"),
           );
         } else if (snapshot.connectionState == ConnectionState.waiting){
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         } else if (!snapshot.hasData) {
-          return Center(
+          return const Center(
             child: Text("Has no date")
           );
         } 
@@ -59,7 +58,7 @@ class _TodosState extends State<Todos> {
                             itemCount: todos.length,
                             itemBuilder: (context, index) {
                               TodoModel todo = todos[index];
-                              return Todocard(index: index, todo: todo);
+                              return Todocard(index: index, todo: todo, todoID: context.read<FolderProvider>().folderOnViewed.todos[index],);
                             }),
                       )
                     ],
