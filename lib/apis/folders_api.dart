@@ -15,6 +15,17 @@ class FolderAPI {
     return entriesSnapshot;
   }
 
+  Stream<List<FolderModel>> getUserFolders(List<dynamic> folderIDs) {
+    final folderSnapshot = (folderIDs.isEmpty) ? Stream<List<FolderModel>>.fromIterable([[]]) : db
+        .collection("folders")
+        .where(FieldPath.documentId, whereIn: folderIDs)
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => FolderModel.fromJSON(e.data() as Map<String, dynamic>))
+            .toList());
+    return folderSnapshot;
+  }
+
   // void updateTodoIDS(List<String> todoIDs) {
   //   db.collection("folders").doc().update({'todos': todoIDs });
   // }

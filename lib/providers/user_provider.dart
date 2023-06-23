@@ -6,7 +6,7 @@ import '../apis/user_api.dart';
 class UserProvider with ChangeNotifier {
   late UserAPI firebaseTodoService;
   late String currentUserID;
-  late UserModel currentUSer;
+  late UserModel currentUser;
 
   Stream<UserModel> userStream = const Stream.empty();
 
@@ -30,13 +30,15 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void login(String id) {
+  void login(String id) async {
     currentUserID = id;
+    currentUser = await firebaseTodoService.getUserModel(currentUserID);
     fetchUser();
   }
 
-  void register(String id) {
+  void register(String id) async {
     currentUserID = id;
+    currentUser = await firebaseTodoService.getUserModel(currentUserID);
     createUser(id);
     fetchUser();
   }
