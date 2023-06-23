@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/providers/folder_provider.dart';
 import 'package:todo_app/providers/todo_provider.dart';
+import 'package:todo_app/providers/user_provider.dart';
 import 'package:todo_app/screens/create_todo.dart';
 import 'package:todo_app/screens/edit_todo.dart';
 import 'package:todo_app/screens/homepage.dart';
@@ -23,6 +24,7 @@ void main() async {
         create: (context) => TodoProvider(),
       ),
       ChangeNotifierProvider(create: (context) => FolderProvider()),
+      ChangeNotifierProvider(create: (context) => UserProvider())
       // StreamProvider<Query
     ], child: const MyApp()),
   );
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<FolderModel>>.value(
           value: context.watch<FolderProvider>().foldersStream,
           initialData: const [],
-        )
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -59,10 +61,17 @@ class MyApp extends StatelessWidget {
         routes: {
           "/signin": (context) {
             return SignInScreen(
-              providers: [EmailAuthProvider(),PhoneAuthProvider()],
+              providers: [EmailAuthProvider(), PhoneAuthProvider()],
               actions: [
                 AuthStateChangeAction<SignedIn>((context, state) {
                   Navigator.pushReplacementNamed(context, '/');
+                  context.read<UserProvider>().login(state.user!.uid);
+                }),
+                AuthStateChangeAction<UserCreated>((context, state) {
+                  Navigator.pushReplacementNamed(context, '/');
+                  context
+                      .read<UserProvider>()
+                      .register(state.credential.user!.uid);
                 }),
               ],
             );

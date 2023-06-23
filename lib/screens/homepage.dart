@@ -1,8 +1,12 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:todo_app/custom-widgets/todo_folder.dart';
 import 'package:todo_app/models/folder_model.dart';
+
+import '../models/user_model.dart';
+import '../providers/user_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,55 +40,79 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.deepPurple.shade500,
-          bottom: const TabBar(
-            tabs: [
-              Text(
-                "Active",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
+    Stream<UserModel> userStream = context.watch<UserProvider>().getUserStream();
+    return StreamBuilder<Object>(
+      stream: userStream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting){
+          return const Center(child: CircularProgressIndicator(),);
+        } else if (snapshot.hasError) {
+          print(snapshot.error);
+          return const Center(child: Text("An error has occured"),);
+        } else if (snapshot.hasData == false){
+          return SignInScreen(
+              providers: [EmailAuthProvider(), PhoneAuthProvider()],
+              actions: [
+                AuthStateChangeAction<SignedIn>((context, state) {
+                  Navigator.pushReplacementNamed(context, '/');
+                }),
+                AuthStateChangeAction<UserCreated>((context, state) {
+                  Navigator.pushReplacementNamed(context, '/');
+                }),
+              ],
+            );
+        } 
+        return DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.deepPurple.shade500,
+              bottom: const TabBar(
+                tabs: [
+                  Text(
+                    "Active",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  ),
+                  Text("Favorites",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20))
+                ],
+                indicatorColor: Colors.white,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorWeight: 2,
+                labelStyle: TextStyle(
+                    color: Colors.yellow,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 4),
+                labelPadding: EdgeInsets.all(8.0),
               ),
-              Text("Favorites",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20))
-            ],
-            indicatorColor: Colors.white,
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorWeight: 2,
-            labelStyle: TextStyle(
-                color: Colors.yellow,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 4),
-            labelPadding: EdgeInsets.all(8.0),
+            ),
+            drawer: Drawer(
+              child: ListView(children: const [
+                DrawerHeader(
+                  child: Center(
+                      child: Text(
+                    "TODO APP",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  )),
+                )
+              ]),
+            ),
+            body: TabBarView(children: [todoPage(context), const Placeholder()]),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/create-todo");
+              },
+              child: const Icon(Icons.add),
+            ),
           ),
-        ),
-        drawer: Drawer(
-          child: ListView(children: const [
-            DrawerHeader(
-              child: Center(
-                  child: Text(
-                "TODO APP",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              )),
-            )
-          ]),
-        ),
-        body: TabBarView(children: [todoPage(context), const Placeholder()]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, "/create-todo");
-          },
-          child: const Icon(Icons.add),
-        ),
-      ),
+        );
+      }
     );
   }
 }
