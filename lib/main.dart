@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/providers/folder_provider.dart';
@@ -6,7 +7,6 @@ import 'package:todo_app/providers/todo_provider.dart';
 import 'package:todo_app/screens/create_todo.dart';
 import 'package:todo_app/screens/edit_todo.dart';
 import 'package:todo_app/screens/homepage.dart';
-import 'package:todo_app/screens/signin.dart';
 import 'package:todo_app/screens/todos.dart';
 
 import 'firebase_options.dart';
@@ -36,28 +36,43 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<List<TodoModel>>.value(value: context.watch<TodoProvider>().todosStream, initialData: const [],),
-        StreamProvider<List<FolderModel>>.value(value: context.watch<FolderProvider>().foldersStream, initialData: const [],)
+        StreamProvider<List<TodoModel>>.value(
+          value: context.watch<TodoProvider>().todosStream,
+          initialData: const [],
+        ),
+        StreamProvider<List<FolderModel>>.value(
+          value: context.watch<FolderProvider>().foldersStream,
+          initialData: const [],
+        )
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primaryColorLight: Color.fromARGB(255, 158, 240, 26),
-            primaryColor: const Color.fromARGB(255, 0, 128, 0),
-            primaryColorDark: const Color.fromARGB(255, 0, 75, 35),
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          initialRoute: "/homepage",
-          routes: {
-            "/": (context) => const SignIn(),
-            "/homepage": (context) => const HomePage(),
-            "/create-todo": (context) => const CreateToDo(),
-            "/edit-todo": (context) => const EditTodo(),
-            "/todos": (context) => Todos(),
-          },),
-          
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primaryColorLight: const Color.fromARGB(255, 158, 240, 26),
+          primaryColor: const Color.fromARGB(255, 0, 128, 0),
+          primaryColorDark: const Color.fromARGB(255, 0, 75, 35),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        initialRoute: "/signin",
+        routes: {
+          "/signin": (context) {
+            return SignInScreen(
+              providers: [EmailAuthProvider(),PhoneAuthProvider()],
+              actions: [
+                AuthStateChangeAction<SignedIn>((context, state) {
+                  Navigator.pushReplacementNamed(context, '/');
+                }),
+              ],
+            );
+          },
+          "/": (context) => const HomePage(),
+          "/create-todo": (context) => const CreateToDo(),
+          "/edit-todo": (context) => const EditTodo(),
+          "/todos": (context) => Todos(),
+        },
+      ),
     );
   }
 }
